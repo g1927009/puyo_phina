@@ -19,6 +19,7 @@ var CONFIG_ERASE_ANIMATION_DURATION = 30; // 何フレームでぷよを消す�
 var CONFIG_PUYO_COLORS = 4; // 何色のぷよを使うか
 var CONFIG_PLAYER_FALLING_SPEED = 0.9; // プレイ中の自然落下のスピード
 var CONFIG_PLAYER_DOWN_SPEED = 10; // プレイ中の下キー押下時の落下スピード
+var CONFIG_PLAYER_PLUS_SPEED = 0.1; // プレイ中のスコアによって加算されていく落下スピード
 var CONFIG_PLAYER_GROUND_FRAME = 20; // 何フレーム接地したらぷよを固定するか
 var CONFIG_PLAYER_MOVE_FRAME = 10; // 左右移動に消費するフレーム数
 var CONFIG_PLAYER_ROTATE_FRAME = 10; // 回転に消費するフレーム数
@@ -395,10 +396,10 @@ class Player{
     }
     if(!isBlocked) {
       // 下にブロックがないなら自由落下してよい。プレイヤー操作中の自由落下処理をする
-      this.puyoStatus.top += CONFIG_PLAYER_FALLING_SPEED;
+      this.puyoStatus.top += CONFIG_PLAYER_FALLING_SPEED + (CONFIG_PLAYER_PLUS_SPEED * this.score / 1000);
       if(isDownPressed) {
         // 下キーが押されているならもっと加速する
-        this.puyoStatus.top += CONFIG_PLAYER_DOWN_SPEED;
+        this.puyoStatus.top += CONFIG_PLAYER_DOWN_SPEED + (CONFIG_PLAYER_PLUS_SPEED * this.score / 1000);
       }
       if(Math.floor(this.puyoStatus.top / CONFIG_PUYO_IMG_HEIGHT) != y) {
         // ブロックの境を超えたので、再チェックする
