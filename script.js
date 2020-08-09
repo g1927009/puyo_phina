@@ -124,7 +124,7 @@ class Stage{
           // 最終目的地に置く
           this.setPuyo(x, dst, cell);
           this.setPuyoAlpha(x, dst, 0.0);
-//          this.board[dst][x] = cell;
+          this.board[dst][x] = cell;
           // 落ちるリストに入れる
           this.fallingPuyoList.push({
             color: cell,
@@ -156,7 +156,7 @@ class Stage{
         puyo.info.departure = puyo.info.destination;
         puyo.remove();
         // 固定ぷよを表示する
-//        Stage.setPuyo(puyo.info.x, puyo.info.dst, puyo.info.color);
+        Stage.setPuyo(puyo.info.x, puyo.info.dst, puyo.info.color);
       } else {
         // まだ落下しているぷよがあることを記録する
         isFalling = true;
@@ -338,10 +338,10 @@ class Player{
     movablePuyo.setColor(this.movablePuyo);
     movablePuyo.alpha = 1.0;
 
-//    this.centerPuyoElement = PuyoImage.getPuyo(this.centerPuyo);
-//    this.movablePuyoElement = PuyoImage.getPuyo(this.movablePuyo);
-//    this.Stage.stageElement.appendChild(this.centerPuyoElement);
-//    this.Stage.stageElement.appendChild(this.movablePuyoElement);
+    this.centerPuyoElement = PuyoImage.getPuyo(this.centerPuyo);
+    this.movablePuyoElement = PuyoImage.getPuyo(this.movablePuyo);
+    this.Stage.stageElement.appendChild(this.centerPuyoElement);
+    this.Stage.stageElement.appendChild(this.movablePuyoElement);
     
     // ぷよの初期配置を定める
     this.puyoStatus = {
@@ -377,10 +377,10 @@ class Player{
       x + BOARD_OFFSET_X + CONFIG_PUYO_IMG_WIDTH / 2, 
       y + BOARD_OFFSET_Y + CONFIG_PUYO_IMG_HEIGHT / 2);
 
-//    this.centerPuyoElement.style.left = this.puyoStatus.left + 'px';
-//    this.centerPuyoElement.style.top = this.puyoStatus.top + 'px';
-//    this.movablePuyoElement.style.left = x + 'px';
-//    this.movablePuyoElement.style.top = y + 'px';
+    this.centerPuyoElement.style.left = this.puyoStatus.left + 'px';
+    this.centerPuyoElement.style.top = this.puyoStatus.top + 'px';
+    this.movablePuyoElement.style.left = x + 'px';
+    this.movablePuyoElement.style.top = y + 'px';
   }
 
   falling (isDownPressed) {
@@ -396,10 +396,10 @@ class Player{
     }
     if(!isBlocked) {
       // 下にブロックがないなら自由落下してよい。プレイヤー操作中の自由落下処理をする
-      this.puyoStatus.top = this.puyoStatus.top + (CONFIG_PLAYER_FALLING_SPEED * (this.score/1000);
+      this.puyoStatus.top = this.puyoStatus.top + (CONFIG_PLAYER_FALLING_SPEED * (this.score / 1000));
       if(isDownPressed) {
         // 下キーが押されているならもっと加速する
-        this.puyoStatus.top += CONFIG_PLAYER_DOWN_SPEED;
+        this.puyoStatus.top = this.puyoStatus.top + (CONFIG_PLAYER_DOWN_SPEED * (this.score / 1000));
       }
       if(Math.floor(this.puyoStatus.top / CONFIG_PUYO_IMG_HEIGHT) != y) {
         // ブロックの境を超えたので、再チェックする
@@ -731,11 +731,11 @@ phina.define("MainScene", {
         if(eraseInfo){
           this.combinationCount++;
           this.score += this.calculateScore(this.combinationCount, eraseInfo.piece, eraseInfo.color);
-//          this.stage.hideZenkeshi();
+          this.stage.hideZenkeshi();
           this.state = 'erasing';
         }else{
           if(this.stage.puyoCount===0 && 0 < this.combinationCount){
-//            this.stage.showZenkeshi();
+            this.stage.showZenkeshi();
             this.score += 3600;
           }
           combinationCount = 0;
@@ -813,9 +813,7 @@ phina.define("MainScene", {
 });
 
 
-/*
- * ぷよ
- */
+/* ぷよ */
 phina.define('Puyo', {
   superClass: 'RectangleShape',
 
