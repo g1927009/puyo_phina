@@ -395,10 +395,10 @@ class Player{
     }
     if(!isBlocked) {
       // 下にブロックがないなら自由落下してよい。プレイヤー操作中の自由落下処理をする
-      this.puyoStatus.top += CONFIG_PLAYER_FALLING_SPEED;
+      this.puyoStatus.top = this.puyoStatus.top + CONFIG_PLAYER_FALLING_SPEED;
       if(isDownPressed) {
         // 下キーが押されているならもっと加速する
-        this.puyoStatus.top += CONFIG_PLAYER_DOWN_SPEED;
+        this.puyoStatus.top = this.puyoStatus.top + CONFIG_PLAYER_DOWN_SPEED;
       }
       if(Math.floor(this.puyoStatus.top / CONFIG_PUYO_IMG_HEIGHT) != y) {
         // ブロックの境を超えたので、再チェックする
